@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block extra_style %}
+{% endblock %}
+{% block style %}
+	<style type="text/css">
+	</style>
+{% endblock %}
+
+{% block menu%}
+{% endblock %}
+
+{% block content%}
+  <!--  <div class="notika-area">
+	    <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+          	test
+					</div>
+				</div>
+			</div>
+		</div> -->
+	<form action="/check_login/" method="POST">
+		{% csrf_token %}
+		<div class="breadcomb-area" style="margin-top: 80px;">
+			<div class="container animated rubberBand">
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="breadcomb-list" id="upload-area" style="height: 324px;">
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
+									<img src="{% static 'img/logo.png' %}">
+								</div>
+							</div>
+							<div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="form-example-wrap mg-t-30">
+                    <div class="form-example-int form-horizental">
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-lg-5 col-md-3 col-sm-3 col-xs-12">
+                            <label class="hrzn-fm">Username</label>
+                          </div>
+                          <div class="col-lg-4 col-md-7 col-sm-7 col-xs-12">
+                            <div class="nk-int-st">
+                              <input type="text" class="form-control input-sm" name="username" placeholder="Enter Username" required>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-example-int form-horizental mg-t-15">
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-lg-5 col-md-3 col-sm-3 col-xs-12">
+                            <label class="hrzn-fm">Password</label>
+                          </div>
+                          <div class="col-lg-4 col-md-7 col-sm-7 col-xs-12">
+                            <div class="nk-int-st">
+                              <input type="password" class="form-control input-sm" name="password" placeholder="Password" required>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-example-int mg-t-15">
+                      <div class="row" align="center">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <button type="submit" class="btn btn-success notika-btn-success">Login</button>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div align="center" style="color: red;">
+											{% for message in messages %}
+									     	<p> {{ message }}</p>
+									    {% endfor %}
+										</div>
+                  </div>
+              	</div>
+	            </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+{% endblock%}
+
+{% block extra_js %}
+{% endblock %}
+{% block js %}
+ <script type="text/javascript">
+ 
+ </script>
+{% endblock %}

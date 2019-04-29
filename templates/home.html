@@ -1,0 +1,438 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block extra_style %}
+	<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.6/css/fixedColumns.dataTables.min.css">
+  <link rel="stylesheet" href="{% static 'css/bootstrap-select/bootstrap-select.css' %}">
+	<link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}">
+{% endblock %}
+
+{% block style %}
+	<style type="text/css">
+		.dataTable  { font-size: 12px; }
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+			border-radius: 50%;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:focus, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+		    background: #00c292;
+		    color: #fff!important;
+		}
+		.breadcomb-ctn {
+	    margin-left: 20px;
+	    margin-top: 15px;
+		}
+		.breadcomb-report .btn {
+	    background: #00c292;
+		}
+		th, td { white-space: nowrap; }
+   	.DTFC_LeftBodyLiner{
+   		overflow-y: auto !important;
+   	}
+   	.dataTables_wrapper.no-footer .dataTables_scrollBody {
+     border-bottom: 1px  #fff; 
+		}
+		table.dataTable.no-footer {
+     border-bottom: 1px  #fff; 
+		}
+   
+		.notika-up-arrow{
+	    color: #00c292;
+   		margin-left: 3px;
+		}
+		.notika-down-arrow{
+	    color: #F44336;
+   		margin-left: 3px;
+		}
+		.modal-dialog.modals-default .modal-content, .modal-dialog.modal-sm .modal-content, .modal-dialog.modal-large .modal-content {
+		    border-radius: 0px;
+		    padding: 35px 35px;
+		}
+
+		table#data-table-basic.dataTable tbody tr:hover {
+		  background-color: #ffa;
+		}
+
+		table#data-table-basic.dataTable tbody tr:hover > .sorting_1 {
+		  background-color: #ffa;
+		}
+		/* Absolute Center Spinner */
+		.loading {
+		  position: fixed;
+		  z-index: 999;
+		  height: 2em;
+		  width: 2em;
+		  overflow: show;
+		  margin: auto;
+		  top: 0;
+		  left: 0;
+		  bottom: 0;
+		  right: 0;
+		}
+
+		/* Transparent Overlay */
+		.loading:before {
+		  content: '';
+		  display: block;
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		    background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+
+		  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+		}
+
+		/* :not(:required) hides these rules from IE9 and below */
+		.loading:not(:required) {
+		  /* hide "loading..." text */
+		  font: 0/0 a;
+		  color: transparent;
+		  text-shadow: none;
+		  background-color: transparent;
+		  border: 0;
+		}
+
+		.loading:not(:required):after {
+		  content: '';
+		  display: block;
+		  font-size: 10px;
+		  width: 1em;
+		  height: 1em;
+		  margin-top: -0.5em;
+		  -webkit-animation: spinner 1500ms infinite linear;
+		  -moz-animation: spinner 1500ms infinite linear;
+		  -ms-animation: spinner 1500ms infinite linear;
+		  -o-animation: spinner 1500ms infinite linear;
+		  animation: spinner 1500ms infinite linear;
+		  border-radius: 0.5em;
+		  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+			box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+		}
+
+		/* Animation */
+
+		@-webkit-keyframes spinner {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    -moz-transform: rotate(0deg);
+		    -ms-transform: rotate(0deg);
+		    -o-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    -moz-transform: rotate(360deg);
+		    -ms-transform: rotate(360deg);
+		    -o-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+		@-moz-keyframes spinner {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    -moz-transform: rotate(0deg);
+		    -ms-transform: rotate(0deg);
+		    -o-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    -moz-transform: rotate(360deg);
+		    -ms-transform: rotate(360deg);
+		    -o-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+		@-o-keyframes spinner {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    -moz-transform: rotate(0deg);
+		    -ms-transform: rotate(0deg);
+		    -o-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    -moz-transform: rotate(360deg);
+		    -ms-transform: rotate(360deg);
+		    -o-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+		@keyframes spinner {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    -moz-transform: rotate(0deg);
+		    -ms-transform: rotate(0deg);
+		    -o-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    -moz-transform: rotate(360deg);
+		    -ms-transform: rotate(360deg);
+		    -o-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+	    padding: 0.5em 0em;
+	  }
+	  div.dt-buttons{
+			position:relative;
+			margin-left: 15px;
+			float:right;
+		}
+	</style>
+
+{% endblock %}
+
+{% block content%}
+<div class="loading">Loading&#8230;</div>
+
+	<div class="breadcomb-area">
+		<div class="container animated flipInX">
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="breadcomb-list">
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="breadcomb-wp">
+									<div class="breadcomb-icon">
+										<i class="notika-icon notika-form"></i>
+									</div>
+									<div class="breadcomb-ctn">
+										<h2>Dashboard for 
+										{% for i in customer %} 
+											{% if i.customer_id == current_customer%} 
+												{{i.customer_name}}
+											{% endif %}
+										{% endfor %}</h2>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-3" align="right">
+								<div class="breadcomb-report" >
+									<span data-toggle="tooltip" title="Filter" data-placement="right">
+										<button data-toggle="modal" class="btn" data-target="#myModalone">
+											<i class="fa fa-filter"></i>
+										</button>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- modal Filter  -->
+  <form action="/home-filter/" method="POST">
+		{% csrf_token %}
+		<div class="modal fade" id="myModalone" role="dialog">
+			<div class="modal-dialog modals-default">
+		    <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        <div class="modal-body">
+	          <h2>Table Filter</h2>
+	          <hr>
+	          <div class="row">
+	          	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	          		<select class="selectpicker input-group-btn" id="customer" name="customer">
+	          			{% for i in customer %}
+									<option value="{{i.customer_id}}" {% if i.customer_id == current_customer %}selected{% endif %}>{{i.customer_initial}} - {{i.customer_name}}</option>
+									{% endfor %}
+								</select>
+								<select class="selectpicker input-group-btn" id="period" name="period">
+									<option value="6" {% if period == '6' %} selected {% endif %}>last 6 WK</option>
+									<option value="12" {% if period == '12' %} selected {% endif %}>last 12 WK</option>
+									<option value="24" {% if period == '24' %} selected {% endif %}>last 24 WK</option>
+								</select>
+	              <select class="selectpicker input-group-btn" id="unit" name="unit">
+									<option value="Week" {% if unit == 'Week' %} selected {% endif %}>Week</option>
+									<option value="Month" {% if unit == 'Month' %} selected {% endif %}>Month</option>
+									<option value="Year" {% if unit == 'Year' %} selected {% endif %}>Year</option>
+									<option value="Quarter" {% if unit == 'Quarter' %} selected {% endif %}>Quarter</option>
+								</select>
+	          	</div>
+	          </div>
+	        </div>
+	        <div class="modal-footer" style="margin-top: 20px;" align="center">
+	          <button type="submit" id="btnFilter" class="btn btn-default">Save changes</button>
+	        </div>
+		    </div>
+			</div>
+		</div>
+	</form>
+	<!-- end modal filter -->
+
+	<div class="data-table-area">
+	  <div class="container animated fadeInDown">
+	    <div class="row">
+	      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	        <div class="data-table-list">
+	          <div class="table-responsive">
+	            <table id="data-table-basic" class="table table-striped table-hover table-bordered ">
+	              <thead>
+	                <tr >
+	                  <th style="text-align: center;">Product ID</th>
+	                  <!-- <th style="text-align: center;width: auto;">Description</th> -->
+	                  <th style="text-align: center;">By {{unit}} </th>
+                   	{% for i in work_week %}
+	                  <th style="text-align: center;">{{i}}</th>
+	                  {% endfor %}
+	                  <th style="text-align: center;">Diff QTY</th>
+	                  <th style="text-align: center;">Diff %</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	              	{% for i in forecast %}
+	              		<tr>
+		                  <td>{{i.product_id}}</td>
+		                  <!-- <td title="{{i.fulldescription}}" align="left">{{i.description}}</td> -->
+		                  <td align="center">{{i.date|safe}}</td>
+		                  {% for j in i.work_week %}
+		                  <td align="center">{{j}}</td>
+		                  {% endfor %}
+
+		                  {% if i.diff_qty < 0  %}
+			                  <td align="center" style="color: #ff3838;">{{i.diff_qty}} 
+			                  	<span ><i class="notika-icon notika-down-arrow"></i></span>
+			                  </td>
+			                  <td align="center" style="color: #ff3838;">{{i.diff_percent}}</td>
+		                  {% else %}
+			                  {% if i.diff_qty > 0 and diff_percent != 0 %}
+			                		<td align="center" style="color: #00c292;">{{i.diff_qty}} <i class="notika-icon notika-up-arrow"></i></td>
+			                  	<td align="center"  style="color: #00c292;">{{i.diff_percent}}</td>
+			                  {% else %}
+				                  <td align="center" >{{i.diff_qty}} </td>
+			                  	<td align="center">{{i.diff_percent}}</td>
+			                	{% endif %}
+		                	{% endif %}
+		                </tr>
+	              	{% endfor %}
+	              </tbody>
+	            </table>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+	<script src="{% static 'js/data-table/jquery.dataTables.min.js' %}"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+	<script src="{% static 'js/bootstrap-select/bootstrap-select.js' %}"></script>
+
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.1/js/dataTables.fixedColumns.min.js"></script>
+	
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+
+	(function ($) {
+ 		"use strict";
+		var work_week = {{work_week|safe}}
+		console.log(work_week.length)
+		$(document).ready(function() {
+ 			if(work_week.length > 12 ) {
+				$('#data-table-basic').DataTable({
+					"aoColumns": [
+            null,
+            // null,
+            {% if unit == "Year" %}
+            	null,
+            {% else %}
+            	{ "sType": "date-uk" },
+            {% endif %}
+            null,
+            null,
+            {% for i in work_week %}
+            null,
+            {% endfor %}
+        	],
+			 	 	'scrollX': true,
+			    'scrollCollapse': true,
+			 	  'fixedColumns': {
+		        'leftColumns': 2
+			    },
+        	"order": [[ work_week.length +2, "asc" ]],
+					'dom': 'Blfrtip',
+	        'buttons': [
+	            // 'copy', 'csv', 'excel', 'pdf', 'print'
+	            'excel'
+	        ]
+				});
+			 $(".dt-button ").addClass('btn btn-primary')
+			 $(".dt-button ").html('<i class="fa fa-download"></i> Excel')
+			 $(".dt-button ").attr('title','Download Excel File')
+
+			 $(".loading").css("display","none")
+ 			}else{
+			 $('#data-table-basic').DataTable({
+			 	"aoColumns": [
+            null,
+            // null,
+            {% if unit == "Year" or unit == "Quarter" %}
+            	null,
+            {% else %}
+            	{ "sType": "date-uk" },
+            {% endif %}
+            null,
+            null,
+            {% for i in work_week %}
+            null,
+            {% endfor %}
+        ],
+        "order": [[work_week.length +2 , "asc" ]],
+        'dom': 'Blfrtip',
+        'buttons': [
+            // 'copy', 'csv', 'excel', 'pdf', 'print'
+            'excel'
+        ]
+			 });
+			 $(".dt-button ").addClass('btn btn-primary')
+			 $(".dt-button ").html('<i class="fa fa-download"></i> Excel')
+			 $(".dt-button ").attr('title','Download Excel File')
+			 $(".loading").css("display","none")
+ 			}
+		});
+
+	})(jQuery); 
+	
+	jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+		"date-uk-pre": function ( a ) {
+		    var ukDatea = a.split('/');
+		    return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+		},
+
+		"date-uk-asc": function ( a, b ) {
+		    return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+		},
+
+		"date-uk-desc": function ( a, b ) {
+		    return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+		}
+	} );
+
+</script>
+{% endblock %}

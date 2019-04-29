@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block extra_style %}
+	<link rel="stylesheet" href="{% static 'css/dialog/sweetalert2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dialog/dialog.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap-select/bootstrap-select.css' %}">
+{% endblock %}
+{% block style %}
+	<style type="text/css">
+		.input-file-container {
+		  position: relative;
+		  width: 225px;
+		} 
+		.js .input-file-trigger {
+		  display: block;
+		  padding: 14px 45px;
+		  background: #167aab;
+		  color: #fff;
+		  font-size: 1em;
+		  transition: all .4s;
+		  cursor: pointer;
+		  text-align: center;
+		}
+		.js .input-file {
+		  position: absolute;
+		  top: 0; left: 0;
+		  width: 225px;
+		  opacity: 0;
+		  padding: 14px 0;
+		  cursor: pointer;
+		  border-radius: 10%;
+		}
+		.js .input-file:hover + .input-file-trigger,
+		.js .input-file:focus + .input-file-trigger,
+		.js .input-file-trigger:hover,
+		.js .input-file-trigger:focus {
+		  background: #34495E;
+		  color: #167aab;
+		}
+
+		.file-return {
+		  margin: 0;
+		}
+		.file-return:not(:empty) {
+		  margin: 1em 0;
+		}
+		.js .file-return {
+		  font-style: italic;
+		  font-size: .9em;
+		  font-weight: bold;
+		  color: #aaa;
+		}
+		.js .file-return:not(:empty):before {
+		  content: "Selected file: ";
+		  font-style: normal;
+		  font-weight: normal;
+		  color: #aaa;
+		}
+
+		.bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+		    width: 80%;
+		}
+
+		.copy {
+		  margin-top: 2em;
+		}
+		.copy a {
+		  text-decoration: none;
+		  color: #1ABC9C;
+		}
+	</style>
+{% endblock %}
+
+{% block content%}
+	<div class="breadcomb-area">
+		<div class="container animated flipInX">
+			<div class="row">
+				<form action="/upload_file_svi/" method="POST" id="form-upload" enctype="multipart/form-data">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<div class="breadcomb-list" id="upload-area" style="height: 380px;">
+							<div class="row" style="margin-bottom: 10px;">
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<div class="breadcomb-wp">
+										<div class="breadcomb-icon">
+											<i class="fa fa-upload" aria-hidden="true"></i>
+										</div>
+										<div class="breadcomb-ctn">
+											<h2>Upload File SVI</h2>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="color: #9E9E9E;margin-top: 10px;">
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<label style="font-size: 16pt;margin-bottom: 15px;">Step 1</label> Select Customer : 
+									<div align="center">
+                  	<select class="form-control" data-live-search="true" name="customer" onchange="customer_select(this.value)">
+                  		{% for i in customer %}
+												<option value="{{i.customer_id}}" {% if i.customer_id == current_customer %}selected{% endif %}>({{i.customer_initial}})-{{i.customer_name}} </option>
+                  		{% endfor %}
+										</select>
+
+                  </div>
+	              </div>
+							</div>
+							<div class="row" style="color: #9E9E9E;margin-top: 10px;">
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<label style="font-size: 16pt;margin-bottom: 15px;">Step 2</label> Select Customer Version : 
+									<div align="center">
+                  		
+                  	<select class="form-control" data-live-search="true" name="customer_version" id="customer_version">
+                  		{% for i in customer_version %}
+                  			{% if i.customer == current_customer %}
+														<option value="{{i.id}}" >{{i.name}}</option>
+												{% endif %}
+                  		{% endfor %}
+										</select>
+
+                  </div>
+	              </div>
+							</div>
+							<div class="row"  style="margin-top: 20px;margin-bottom: 40px;">
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<div style="color: #9E9E9E;">
+										<label style="font-size: 16pt;margin-bottom: 15px;">Step 3</label> Upload a File : <span id="support">(supported : {{customer.0.customer_type_file}})</span>
+									</div>
+									<div align="center">
+	 										{% csrf_token %}
+										  <div class="input-file-container" style="width: 250px;"> 
+										  {% if customer %}
+										    <!-- <input class="input-file" id="my-file" type="file" name="file_upload" accept="{{customer.0.customer_type_file}}">  -->
+										    <input class="input-file" id="my-file" type="file" name="file_upload"> 
+										    <label tabindex="0" for="my-file"  class="input-file-trigger">Upload a file...</label>
+											{% else %}
+												<label style="color: red">No Customer Select !!!</label> <br>
+												<span>Please contact MIS for add customer.</span>
+												<input class="input-file" id="my-file" disabled type="file" style="display: none"> 
+										    <label tabindex="0" for="my-file" style="display: none"  class="input-file-trigger">Upload a file...</label>
+										  {% endif %} 
+										  </div>
+										  <p class="file-return"></p>
+								  </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" >
+          <div class="recent-items-wp notika-shadow sm-res-mg-t-30" id="recent-area">
+            <div class="rc-it-ltd">
+              <div class="recent-items-ctn">
+                <div class="recent-items-title">
+                  <h2>Recent Upload</h2>
+                </div>
+              </div>
+            <div class="recent-items-inn">
+              <table class="table table-inner table-vmiddle">
+                <thead>
+                  <tr>
+                    <th ></th>
+                    <th style="width: 90%">File</th>
+                    <th style="text-align: center;">Date</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                  	{% for i in recent_file %}
+                    	<tr>
+                    		<td>
+                    			<form  action="/removefile/" method="POST" id="form-delete" >
+	 													{% csrf_token %}
+                    			<a href="javascript:void(0)" onclick="remove()" class="fa fa-close" style="color: red" title="Remove File"></a>
+                    			<input type="hidden" name="fileid" value="{{i.id}}">
+                    			</form>
+                    		</td>
+                        <td>
+                        	<a href="{{i.file_path}}" target="_blank" title="{{i.full_name}}">{{i.file_name}}</a>
+                        </td>
+                        <td style="text-align: right;">{{i.upload_date}}</td>
+                      </tr>
+                  	{% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock%}
+
+{% block extra_js %}
+	<script src="{% static 'js/dialog/sweetalert2.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap-select/bootstrap-select.js' %}"></script>
+{% endblock %}
+{% block js %}
+ <script type="text/javascript">
+ 	// document.querySelector("html").classList.add('js');
+ 	$(window).keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+	var fileInput  = document.querySelector( ".input-file" ),  
+	    button     = document.querySelector( ".input-file-trigger" ),
+	    the_return = document.querySelector(".file-return");
+	      
+	button.addEventListener( "keydown", function( event ) {  
+	    if ( event.keyCode == 13 || event.keyCode == 32 ) {  
+	        fileInput.focus();  
+	    }  
+	    console.log("1")
+	});
+	
+	button.addEventListener( "click", function( event ) {
+	   console.log("2")
+	   fileInput.focus();
+
+	   return false;
+	});  
+
+	fileInput.addEventListener( "change", function( event ) {  
+    // the_return.innerHTML = this.value;  
+    if ($("#my-file").val() != "") {
+	    if (confirm("Are you sure to upload " + $("#my-file").val())) {
+			  $( "#form-upload" ).submit();
+	    }else{
+	    	$("#my-file").val("")
+	    	console.log($("#my-file").val())
+	    }
+    }
+	});  
+
+	$("#upload-area").css("height",'380')
+	$("#recent-area").css("height",'380')
+
+
+	{% for message in messages %}
+		console.log('{{message.tags}}')
+		{% if message.tags == 'success' %}
+			swal("Upload Success!", "", "success");
+		{% endif %}
+
+		{% if message.tags == 'error' %}
+			swal("Error", "Your file can't upload. Please check file again before upload !", "error");
+		{% endif %}
+
+	{% endfor %}
+
+	function remove(fileID){
+		if (confirm("Are you sure to remove this file ?")) {
+		  $( "#form-delete" ).submit();
+    }
+	}
+
+	function customer_select(id){
+		version = {{customer_ver_json|safe}}
+		// console.log(version)
+		msg = ""
+		version.forEach(function(value) {
+			if (value['customer'] == id){
+				msg += '<option value="'+value['id']+'">'+value['name']+'</option>'
+			}	
+		})
+		console.log(msg)
+		$("#customer_version").html(msg)
+	}
+ </script>
+{% endblock %}

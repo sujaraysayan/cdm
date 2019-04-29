@@ -1,0 +1,516 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block extra_style %}
+	<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"> -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.6/css/fixedColumns.dataTables.min.css">
+  <link rel="stylesheet" href="{% static 'css/bootstrap-select/bootstrap-select.css' %}">
+	<link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}">
+
+<!-- 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.6/css/fixedColumns.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css"> -->
+
+{% endblock %}
+
+{% block style %}
+	<style type="text/css">
+		.dataTable  { font-size: 12px; }
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+			border-radius: 50%;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:focus, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+		    background: #00c292;
+		    color: #fff!important;
+		}
+		.breadcomb-ctn {
+	    margin-left: 20px;
+	    margin-top: 15px;
+		}
+		.breadcomb-report .btn {
+	    background: #00c292;
+		}
+		th, td { white-space: nowrap; }
+
+   	.DTFC_LeftBodyLiner{
+   		overflow-y: auto !important;
+   	}
+   	.dataTables_wrapper.no-footer .dataTables_scrollBody {
+     border-bottom: 1px  #fff; 
+		}
+		table.dataTable.no-footer {
+     border-bottom: 1px  #fff; 
+		}
+   
+		.notika-up-arrow{
+	    color: #00c292;
+   		margin-left: 3px;
+		}
+		.notika-down-arrow{
+	    color: #F44336;
+   		margin-left: 3px;
+		}
+		.modal-dialog.modals-default .modal-content, .modal-dialog.modal-sm .modal-content, .modal-dialog.modal-large .modal-content {
+		    border-radius: 0px;
+		    padding: 35px 35px;
+		}
+
+		table#data-table-basic.dataTable tbody tr:hover {
+		  background-color: #ffa;
+		}
+
+		table#data-table-basic.dataTable tbody tr:hover > .sorting_1 {
+		  background-color: #ffa;
+		}
+		/* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Transparent Overlay */
+.loading:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+    background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+
+  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.loading:not(:required):after {
+  content: '';
+  display: block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 1500ms infinite linear;
+  -moz-animation: spinner 1500ms infinite linear;
+  -ms-animation: spinner 1500ms infinite linear;
+  -o-animation: spinner 1500ms infinite linear;
+  animation: spinner 1500ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+	box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+	}
+
+	/* Animation */
+
+	@-webkit-keyframes spinner {
+	  0% {
+	    -webkit-transform: rotate(0deg);
+	    -moz-transform: rotate(0deg);
+	    -ms-transform: rotate(0deg);
+	    -o-transform: rotate(0deg);
+	    transform: rotate(0deg);
+	  }
+	  100% {
+	    -webkit-transform: rotate(360deg);
+	    -moz-transform: rotate(360deg);
+	    -ms-transform: rotate(360deg);
+	    -o-transform: rotate(360deg);
+	    transform: rotate(360deg);
+	  }
+	}
+	@-moz-keyframes spinner {
+	  0% {
+	    -webkit-transform: rotate(0deg);
+	    -moz-transform: rotate(0deg);
+	    -ms-transform: rotate(0deg);
+	    -o-transform: rotate(0deg);
+	    transform: rotate(0deg);
+	  }
+	  100% {
+	    -webkit-transform: rotate(360deg);
+	    -moz-transform: rotate(360deg);
+	    -ms-transform: rotate(360deg);
+	    -o-transform: rotate(360deg);
+	    transform: rotate(360deg);
+	  }
+	}
+	@-o-keyframes spinner {
+	  0% {
+	    -webkit-transform: rotate(0deg);
+	    -moz-transform: rotate(0deg);
+	    -ms-transform: rotate(0deg);
+	    -o-transform: rotate(0deg);
+	    transform: rotate(0deg);
+	  }
+	  100% {
+	    -webkit-transform: rotate(360deg);
+	    -moz-transform: rotate(360deg);
+	    -ms-transform: rotate(360deg);
+	    -o-transform: rotate(360deg);
+	    transform: rotate(360deg);
+	  }
+	}
+	@keyframes spinner {
+	  0% {
+	    -webkit-transform: rotate(0deg);
+	    -moz-transform: rotate(0deg);
+	    -ms-transform: rotate(0deg);
+	    -o-transform: rotate(0deg);
+	    transform: rotate(0deg);
+	  }
+	  100% {
+	    -webkit-transform: rotate(360deg);
+	    -moz-transform: rotate(360deg);
+	    -ms-transform: rotate(360deg);
+	    -o-transform: rotate(360deg);
+	    transform: rotate(360deg);
+	  }
+	}
+	</style>
+
+{% endblock %}
+
+{% block content%}
+
+	<div class="breadcomb-area">
+		<div class="container animated flipInX">
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="breadcomb-list">
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="breadcomb-wp">
+									<div class="breadcomb-icon">
+										<i class="notika-icon notika-bar-chart"></i>
+									</div>
+									<div class="breadcomb-ctn">
+										<h2>Analytic 
+
+										{% for i in customer %} 
+											{% if i.customer_id == current_customer%} 
+												{{i.customer_name}}
+											{% endif %}
+										{% endfor %}</h2>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-3" align="right">
+								<div class="breadcomb-report" data-toggle="tooltip" title="Filter" data-placement="right">
+									<button data-toggle="modal" class="btn" data-target="#myModalone">
+										<i class="fa fa-filter"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+  <form action="/reportFilter/" method="POST">
+		{% csrf_token %}
+		<div class="modal fade" id="myModalone" role="dialog">
+			<div class="modal-dialog modals-default">
+		    <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        <div class="modal-body">
+	          <h2>Analytic Filter</h2>
+	          <hr>
+	          <div class="row">
+	          	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	          		<select class="selectpicker input-group-btn" id="customer" name="customer">
+	          			{% for i in customer %}
+									<option value="{{i.customer_id}}" {% if i.customer_id == current_customer %}selected{% endif %}>{{i.customer_initial}}</option>
+									{% endfor %}
+								</select>
+								{{yeear}}
+								<select class="selectpicker input-group-btn" id="period" name="year">
+									<option value="2018" {% if year == '2018' %} selected {% endif %}>2018 </option>
+									<option value="2019" {% if year == '2019' %} selected {% endif %}>2019 </option>
+									<option value="2020" {% if year == '2020' %} selected {% endif %}>2020 </option>
+								</select>
+	              <select class="selectpicker input-group-btn" id="unit" name="unit">
+									<!-- <option value="Month" {% if unit == 'Month' %} selected {% endif %}>Month</option>
+									<option value="Year" {% if unit == 'Year' %} selected {% endif %}>Year</option> -->
+									<option value="Quarter" {% if unit == 'Quarter' %} selected {% endif %}>Quarter</option>
+								</select>
+	          	</div>
+	          </div>
+	        </div>
+	        <div class="modal-footer" style="margin-top: 20px;" align="center">
+	          <button type="submit" id="btnFilter" class="btn btn-default">Save changes</button>
+	        </div>
+		    </div>
+			</div>
+		</div>
+	</form>
+
+	<div class="bar-chart-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="bar-chart-wp">
+            <canvas height="140vh" width="180vw" id="barchart_Q1"></canvas>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="bar-chart-wp sm-res-mg-t-30 chart-display-nn">
+            <canvas height="140vh" width="180vw" id="barchart_Q2"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="bar-chart-wp mg-t-30 chart-display-nn" visibled='false'>
+            <canvas height="140vh" width="180vw" id="barchart_Q3"></canvas>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="bar-chart-wp mg-t-30 chart-display-nn">
+            <canvas height="140vh" width="180vw" id="barchart_Q4"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+	<script src="{% static 'js/data-table/jquery.dataTables.min.js' %}"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.1/js/dataTables.fixedColumns.min.js"></script>
+	<script src="{% static 'js/bootstrap-select/bootstrap-select.js' %}"></script>
+	<script src="{% static 'js/charts/Chart.js' %}"></script>
+  <!-- <script src="{% static 'js/charts/bar-chart.js' %}"></script> -->
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+
+	{% for i in data %}
+	var ctx = document.getElementById("barchart{{i.period|safe}}");
+	var barchart1 = new Chart(ctx, {
+		// type: 'horizontalBar',
+		type: 'bar',
+		data: {
+			// labels: [1,2,3,4,5,6,7,8,9,0],
+			labels: {{i.name|safe}},
+			datasets: [{
+				label: 'Quantity',
+				data: {{i.qty|safe}},
+				backgroundColor: [
+					'rgb(50,205,50, 0.2)',//green
+					'rgba(75, 192, 192, 0.2)',// blue
+					'rgba(255, 206, 86, 0.2)',// orange
+					'rgba(255, 99, 132, 0.2)',// red
+					'rgba(224, 207, 247, 0.2)',// purple
+					'rgba(224, 207, 247, 0.2)',// purple
+					'rgba(255, 99, 132, 0.2)',// red
+					'rgba(255, 206, 86, 0.2)',// orange
+					'rgba(75, 192, 192, 0.2)',// blue
+					'rgb(50,205,50, 0.2)',//green
+				],
+				borderColor: [
+					'rgba(54, 162, 235, 1)', //green
+					'rgba(75, 192, 192, 1)', // blue
+					'rgba(255, 206, 86, 1)', // orange
+					'rgba(255,99,132,1)', // red
+					'rgba(247,138,214,1)', // purple
+					'rgba(247,138,214,1)', // purple
+					'rgba(255,99,132,1)', // red
+					'rgba(255, 206, 86, 1)', // orange
+					'rgba(75, 192, 192, 1)', // blue
+					'rgba(54, 162, 235, 1)', //green
+				],
+				borderWidth: 1
+			}]
+		},
+		options: {
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero:true,
+					},
+					scaleLabel: {
+		        display: true,
+		        labelString: 'Quantity'
+		      }
+				}],
+				xAxes: [{
+					scaleLabel: {
+		        display: true,
+		        labelString: 'Product ID'
+		      }
+				}]
+			},
+			legend: false,
+			title: {
+			  display: true,
+			  text: '{{i.year|safe}}'
+			},
+		},
+    showTooltips: false,
+    onAnimationComplete: function () {
+        var ctx = this.chart.ctx;
+        ctx.font = this.scale.font;
+        ctx.fillStyle = this.scale.textColor
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+
+        this.datasets.forEach(function (dataset) {
+            dataset.bars.forEach(function (bar) {
+                ctx.fillText(bar.value, bar.x, bar.y - 5);
+            });
+        })
+    }
+	});
+	Chart.plugins.register({
+		beforeDraw: function(c) {
+        var ctx = c.chart.ctx;
+        ctx.fillStyle =  'white';
+        ctx.fillRect(0, 0, c.chart.width, c.chart.height);
+    },
+		afterDatasetsDraw: function(chart, easing) {
+		// To only draw at the end of animation, check for easing === 1
+			var ctx = chart.ctx;
+			chart.data.datasets.forEach(function (dataset, i) {
+		    var meta = chart.getDatasetMeta(i);
+		    if (!meta.hidden) {
+		      meta.data.forEach(function(element, index) {
+		        // Draw the text in black, with the specified font
+		        ctx.fillStyle = 'rgb(119, 119, 119)';
+
+		        var fontSize = 12;
+		        var fontStyle = 'normal';
+		        var fontFamily = 'Helvetica Neue';
+		        ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+
+		        // Just naively convert to string for now
+		        var dataString = dataset.data[index].toString();
+
+		        // Make sure alignment settings are correct
+		        ctx.textAlign = 'center';
+		        ctx.textBaseline = 'middle';
+
+		        var padding = 5;
+		        var position = element.tooltipPosition();
+		        ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+		      });
+		    }
+			});
+		}
+	});
+	{% endfor %}
+	// {% for i in data %}
+	// var ctx = document.getElementById("barchart{{i.period|safe}}");
+	// var barchart1 = new Chart(ctx, {
+	// 	// type: 'horizontalBar',
+	// 	type: 'bar',
+	// 	data: {
+	// 		// labels: [1,2,3,4,5,6,7,8,9,0],
+	// 		labels: {{i.name|safe}},
+	// 		datasets: [{
+	// 			label: 'Quantity',
+	// 			data: {{i.qty|safe}},
+	// 			backgroundColor: [
+	// 				'rgb(50,205,50, 0.2)',//green
+	// 				'rgba(75, 192, 192, 0.2)',// blue
+	// 				'rgba(255, 206, 86, 0.2)',// orange
+	// 				'rgba(255, 99, 132, 0.2)',// red
+	// 				'rgba(224, 207, 247, 0.2)',// purple
+	// 				'rgba(224, 207, 247, 0.2)',// purple
+	// 				'rgba(255, 99, 132, 0.2)',// red
+	// 				'rgba(255, 206, 86, 0.2)',// orange
+	// 				'rgba(75, 192, 192, 0.2)',// blue
+	// 				'rgb(50,205,50, 0.2)',//green
+	// 			],
+	// 			borderColor: [
+	// 				'rgba(54, 162, 235, 1)', //green
+	// 				'rgba(75, 192, 192, 1)', // blue
+	// 				'rgba(255, 206, 86, 1)', // orange
+	// 				'rgba(255,99,132,1)', // red
+	// 				'rgba(247,138,214,1)', // purple
+	// 				'rgba(247,138,214,1)', // purple
+	// 				'rgba(255,99,132,1)', // red
+	// 				'rgba(255, 206, 86, 1)', // orange
+	// 				'rgba(75, 192, 192, 1)', // blue
+	// 				'rgba(54, 162, 235, 1)', //green
+	// 			],
+	// 			borderWidth: 1
+	// 		}]
+	// 	},
+	// 	options: {
+	// 		scales: {
+	// 			yAxes: [{
+	// 				ticks: {
+	// 					beginAtZero:true,
+	// 				},
+	// 				scaleLabel: {
+	// 	        display: true,
+	// 	        labelString: 'Quantity'
+	// 	      }
+	// 			}],
+	// 			xAxes: [{
+	// 				scaleLabel: {
+	// 	        display: true,
+	// 	        labelString: 'Product ID'
+	// 	      }
+	// 			}]
+	// 		},
+	// 		legend: false,
+	// 		tooltips: {
+	//       "enabled": false
+	//     },
+	// 		title: {
+	// 		  display: true,
+	// 		  text: '{{i.year|safe}}'
+	// 		},
+	// 		animation: {
+	//       "duration": 1,
+	//       "onComplete": function() {
+ //        	var chartInstance = this.chart,
+ //          ctx = chartInstance.ctx;
+
+	//         ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+	//         ctx.textAlign = 'center';
+	//         ctx.textBaseline = 'bottom';
+
+	//         this.data.datasets.forEach(function(dataset, i) {
+	//           var meta = chartInstance.controller.getDatasetMeta(i);
+	//           meta.data.forEach(function(bar, index) {
+	//             var data = dataset.data[index];
+	//             ctx.fillText(data, bar._model.x, bar._model.y - 5);
+	//           });
+	//         });
+	//       }
+	//     },
+	// 	}
+	// });
+	// {% endfor %}
+
+
+</script>
+{% endblock %}

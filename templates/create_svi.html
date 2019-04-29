@@ -1,0 +1,358 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block extra_style %}
+	<link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}">
+{% endblock %}
+{% block style %}
+	<style type="text/css">
+		.breadcomb-ctn {
+			margin-left: 20px;
+			margin-top: 15px;
+		}
+		.btn-success {
+			background: #00c292;
+		}
+		.button-card{
+			padding-top:25px;
+			padding-bottom:25px;
+		}
+		#div_search button {
+		    vertical-align:bottom;
+		    display: table-cell;
+		}
+		table#table.dataTable tbody tr:hover {
+		  background-color: #ffa;
+		}
+
+		table#table.dataTable tbody tr:hover > .sorting_1 {
+		  background-color: #ffa;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+	    padding: 0.5em 0em;
+	  }
+		th, td { white-space: nowrap; }
+   	.DTFC_LeftBodyLiner{
+   		overflow-y: auto !important;
+   	}
+   	.dataTables_wrapper.no-footer .dataTables_scrollBody {
+     border-bottom: 1px  #fff; 
+		}
+		table.dataTable.no-footer {
+     border-bottom: 1px  #fff; 
+		}
+		.dataTable  { font-size: 12px; }
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+			border-radius: 50%;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:focus, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+		    background: #00c292;
+		    color: #fff!important;
+		}
+		.table.table-hover>tbody>tr>td, .table.table-hover>tbody>tr>th, .table.table-hover>tfoot>tr>td, .table.table-hover>tfoot>tr>th, .table.table-hover>thead>tr>td, .table.table-hover>thead>tr>th {
+			padding: 10px;
+		}
+		.loading {
+		  position: fixed;
+		  z-index: 999;
+		  height: 2em;
+		  width: 2em;
+		  overflow: show;
+		  margin: auto;
+		  top: 0;
+		  left: 0;
+		  bottom: 0;
+		  right: 0;
+		}
+
+		/* Transparent Overlay */
+		.loading:before {
+		  content: '';
+		  display: block;
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		    background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+
+		  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+		}
+
+		/* :not(:required) hides these rules from IE9 and below */
+		.loading:not(:required) {
+		  /* hide "loading..." text */
+		  font: 0/0 a;
+		  color: transparent;
+		  text-shadow: none;
+		  background-color: transparent;
+		  border: 0;
+		}
+
+		.loading:not(:required):after {
+		  content: '';
+		  display: block;
+		  font-size: 10px;
+		  width: 1em;
+		  height: 1em;
+		  margin-top: -0.5em;
+		  -webkit-animation: spinner 1500ms infinite linear;
+		  -moz-animation: spinner 1500ms infinite linear;
+		  -ms-animation: spinner 1500ms infinite linear;
+		  -o-animation: spinner 1500ms infinite linear;
+		  animation: spinner 1500ms infinite linear;
+		  border-radius: 0.5em;
+		  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+			box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+		}
+
+		/* Animation */
+
+		@-webkit-keyframes spinner {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    -moz-transform: rotate(0deg);
+		    -ms-transform: rotate(0deg);
+		    -o-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    -moz-transform: rotate(360deg);
+		    -ms-transform: rotate(360deg);
+		    -o-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+		@-moz-keyframes spinner {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    -moz-transform: rotate(0deg);
+		    -ms-transform: rotate(0deg);
+		    -o-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    -moz-transform: rotate(360deg);
+		    -ms-transform: rotate(360deg);
+		    -o-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+		@-o-keyframes spinner {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    -moz-transform: rotate(0deg);
+		    -ms-transform: rotate(0deg);
+		    -o-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    -moz-transform: rotate(360deg);
+		    -ms-transform: rotate(360deg);
+		    -o-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+		@keyframes spinner {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    -moz-transform: rotate(0deg);
+		    -ms-transform: rotate(0deg);
+		    -o-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    -moz-transform: rotate(360deg);
+		    -ms-transform: rotate(360deg);
+		    -o-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+	</style>
+{% endblock %}
+
+{% block content%}
+<div class="loading" style="display: none">Loading&#8230;</div>
+
+<form action="/create_svi_version/" method="POST" id="form_create">
+	{% csrf_token %}
+	<div class="breadcomb-area">
+		<div class="container animated flipInX">
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="breadcomb-list">
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="breadcomb-wp">
+									<div class="breadcomb-icon">
+										<i class="notika-icon notika-form"></i>
+									</div>
+									<div class="breadcomb-ctn">
+										<h2>Create SVI Version
+										</h2>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-3" align="right">
+								<div>
+									<!-- <a href="#" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</a> -->
+									<button id="saveform" type="button" class="btn btn-success" disabled><i class="fa fa-check"></i> Save</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<div class="data-table-area">
+	  <div class="container animated fadeInDown">
+	  
+	    <div class="row">
+	      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	        <div class="data-table-list">
+        		<div class="row">
+				  		<div class="col-lg-5">
+				  			1. Select customer
+				  			<select  class="form-control" id="customer_select" name="customer_select">
+				  				{% for i in customer %}
+				  				<option value="{{i.customer_id}}">{{i.customer_name}}</option>
+				  				{% endfor %}
+				  			</select>
+				  		</div>
+				  		<div class="col-lg-6">
+				  			2. Select customer version
+				  			<select  class="form-control" id="file_select" name="file_select">
+				  				{% for i in file %}
+					  				{% if i.customer == current_customer %}
+					  				<option value="{{i.file_id}}">{{i.file_name}}</option>
+					  				{% endif %}
+				  				{% endfor %}
+				  			</select>
+				  		</div>
+				  		<div class="col-lg-1" id="div_search" style="height: 54px;">
+				  			<br>
+				  			<button type="button" id="btnSearch" class="btn btn-primary"><i class="fa fa-search"></i></button>
+				  		</div>
+				  	</div>
+				  	<br>
+	          <div class="table-responsive" id="div_table" >
+	            <table id="table" class="table table-hover table-bordered ">
+	              <thead>
+	                <tr >
+	                  <th style="text-align: center;">Product ID</th>
+	                  <!-- <th style="text-align: center;width: auto;">Description</th> -->
+	                  <th style="text-align: center;">Date</th>
+	                  <th style="text-align: center;">QTY</th>
+	                  <th style="text-align: center;width: 3%;">Remove</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	              	
+	              </tbody>
+	            </table>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</form>
+{% endblock %}
+{% block extra_js %}
+	<script src="{% static 'js/data-table/jquery.dataTables.min.js' %}"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+
+
+	var table = $('#table').DataTable()
+
+	$("#customer_select").change(function(){
+		var select_now = this.value
+		var msg = ""
+		var file = {{file_json|safe}}
+		$.each(file, function( index, value ) {
+			if(select_now == value['customer']){
+				msg += "<option value='"+value['file_id']+"'>"+value['file_name']+"</option>"
+			}
+		});
+		$("#file_select").html(msg)
+	})
+
+
+
+
+	var list_forcast = []
+	$("#btnSearch").click(function(){
+		list_forcast = []
+		customer = $("#customer_select").val()
+		file = $("#file_select").val()
+		msg = ""
+		$('#table').dataTable().fnClearTable();
+    $('#table').dataTable().fnDraw();
+    $('#table').dataTable().fnDestroy();
+    $(".loading").css('display',"")
+		$.ajax({
+	    url: '/api_get_forecast/',
+	    type: "GET",
+	    data: {'customer': customer,'file': file},
+	    success: function(data) {
+	    	count = 0
+	    	$.each(data, function( index, value ) {
+	    		list_forcast.push(value)
+	        msg += '<tr id="item'+count+'" >'
+	        msg += '<td valign="bottom">'+value['product_id']+"<input type='hidden' value='"+value['product_id']+"' name='product_id[]'></td>"
+	        msg += '<td><input class="form-control" type="date" name="date[]" value="'+value['date']+'"><input class="form-control" type="hidden" name="old_date[]" value="'+value['date']+'"></td>'
+	        msg += '<td><input class="form-control" type="number" name="qty[]" value="'+value['qty']+'"><input class="form-control" type="hidden" name="old_qty[]" value="'+value['qty']+'"></td>'
+	        msg += '<td align="center"><button class="btn btn-danger" onclick="remove('+count+')"><i class="fa fa-close"></i></button></td>'
+	        msg += '</tr>'
+	        count += 1
+				});
+				$("#table tbody").html(msg)
+				// $("#div_table").css('display',"")
+				table = $('#table').DataTable({
+				
+				})
+			 content_height = $( "html" ).innerHeight();
+		   screen_height =  screen.height;
+		   if (content_height+50 < screen_height) {
+		    /*: fixed;*/
+		    $(".footer-copyright-area").css('position','fixed')
+		   }else{
+		    $(".footer-copyright-area").css('position','')
+		   }
+		   window.onbeforeunload = function() {
+			  return true ;
+			}
+			$("#saveform").removeAttr('disabled')
+    $(".loading").css('display',"none")
+
+	    },
+		});
+	})
+
+	$('#table').on( 'click',  'button', function () {
+		table.row($(this).parents('tr')).remove().draw(false);
+	});
+
+	$("#saveform").click(function(){
+		if(confirm("Do you want to save this form ?")){
+			console.log("here")
+			table.destroy()
+			table = $('#table').DataTable({
+					"paging": false
+			})
+			
+			$( "#form_create" ).submit();
+			window.onbeforeunload = null;
+		}
+	})
+</script>
+{% endblock %}

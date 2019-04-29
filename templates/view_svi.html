@@ -1,0 +1,353 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block extra_style %}
+	<link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}">
+{% endblock %}
+{% block style %}
+	<style type="text/css">
+		.breadcomb-ctn {
+			margin-left: 20px;
+			margin-top: 15px;
+		}
+		.btn-success {
+			background: #00c292;
+		}
+		.button-card{
+			padding-top:25px;
+			padding-bottom:25px;
+		}
+		#div_search button {
+		    vertical-align:bottom;
+		    display: table-cell;
+		}
+		.table-hover table#table.dataTable tbody tr:hover  {
+		  background-color: #ffa;
+		}
+
+		 .table-hover  table#table.dataTable tbody tr:hover > .sorting_1 {
+		  background-color: #ffa;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+	    padding: 0.5em 0em;
+	  }
+		th, td { white-space: nowrap; }
+   	.DTFC_LeftBodyLiner{
+   		overflow-y: auto !important;
+   	}
+   	.dataTables_wrapper.no-footer .dataTables_scrollBody {
+     border-bottom: 1px  #fff; 
+		}
+		table.dataTable.no-footer {
+     border-bottom: 1px  #fff; 
+		}
+		.dataTable  { font-size: 12px; }
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+			border-radius: 50%;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:focus, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+		    background: #00c292;
+		    color: #fff!important;
+		}
+		.table.table-hover>tbody>tr>td, .table.table-hover>tbody>tr>th, .table.table-hover>tfoot>tr>td, .table.table-hover>tfoot>tr>th, .table.table-hover>thead>tr>td, .table.table-hover>thead>tr>th {
+			padding: 10px;
+		}
+		.loading {
+		  position: fixed;
+		  z-index: 999;
+		  height: 2em;
+		  width: 2em;
+		  overflow: show;
+		  margin: auto;
+		  top: 0;
+		  left: 0;
+		  bottom: 0;
+		  right: 0;
+		}
+
+		/* Transparent Overlay */
+		.loading:before {
+		  content: '';
+		  display: block;
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		    background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+
+		  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+		}
+
+		/* :not(:required) hides these rules from IE9 and below */
+		.loading:not(:required) {
+		  /* hide "loading..." text */
+		  font: 0/0 a;
+		  color: transparent;
+		  text-shadow: none;
+		  background-color: transparent;
+		  border: 0;
+		}
+
+		.loading:not(:required):after {
+		  content: '';
+		  display: block;
+		  font-size: 10px;
+		  width: 1em;
+		  height: 1em;
+		  margin-top: -0.5em;
+		  -webkit-animation: spinner 1500ms infinite linear;
+		  -moz-animation: spinner 1500ms infinite linear;
+		  -ms-animation: spinner 1500ms infinite linear;
+		  -o-animation: spinner 1500ms infinite linear;
+		  animation: spinner 1500ms infinite linear;
+		  border-radius: 0.5em;
+		  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+			box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+		}
+
+		/* Animation */
+
+		@-webkit-keyframes spinner {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    -moz-transform: rotate(0deg);
+		    -ms-transform: rotate(0deg);
+		    -o-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    -moz-transform: rotate(360deg);
+		    -ms-transform: rotate(360deg);
+		    -o-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+		@-moz-keyframes spinner {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    -moz-transform: rotate(0deg);
+		    -ms-transform: rotate(0deg);
+		    -o-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    -moz-transform: rotate(360deg);
+		    -ms-transform: rotate(360deg);
+		    -o-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+		@-o-keyframes spinner {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    -moz-transform: rotate(0deg);
+		    -ms-transform: rotate(0deg);
+		    -o-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    -moz-transform: rotate(360deg);
+		    -ms-transform: rotate(360deg);
+		    -o-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+		@keyframes spinner {
+		  0% {
+		    -webkit-transform: rotate(0deg);
+		    -moz-transform: rotate(0deg);
+		    -ms-transform: rotate(0deg);
+		    -o-transform: rotate(0deg);
+		    transform: rotate(0deg);
+		  }
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		    -moz-transform: rotate(360deg);
+		    -ms-transform: rotate(360deg);
+		    -o-transform: rotate(360deg);
+		    transform: rotate(360deg);
+		  }
+		}
+		div.dt-buttons{
+			position:relative;
+			margin-left: 15px;
+			float:right;
+		}
+	</style>
+{% endblock %}
+
+{% block content%}
+<div class="loading" style="display: none">Loading&#8230;</div>
+
+<form action="/update_svi_version/" method="POST" id="form_create">
+	{% csrf_token %}
+	<input type="hidden" name="forecast_id" value="{{forecast.id}}">
+	<div class="breadcomb-area">
+		<div class="container animated flipInX">
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="breadcomb-list">
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="breadcomb-wp">
+									<div class="breadcomb-icon">
+										<i class="notika-icon notika-form"></i>
+									</div>
+									<div class="breadcomb-ctn">
+										<h2>SVI Version : {{forecast.create_date}}
+										</h2>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-3" align="right">
+								<div>
+									<!-- <a href="#" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</a> -->
+									{% if forecast.status == 'Private' %}
+									<button id="saveform" type="button" class="btn btn-success" ><i class="fa fa-check"></i> Update</button>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<div class="data-table-area">
+	  <div class="container animated fadeInDown">
+	  
+	    <div class="row">
+	      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	        <div class="data-table-list">
+        		<div class="row">
+				  		<div class="col-lg-5">
+				  			1. Customer
+				  			<input type="text" readonly name="" value="{{forecast.customer.customer_name}}" class="form-control">
+				  			
+				  		</div>
+				  		<div class="col-lg-6">
+				  			2. Customer version
+				  			<input type="text" readonly name="" value="{{forecast.file_upload.file_name}}" class="form-control">
+				  		</div>
+				  	
+				  	</div>
+				  	<br>
+	          <div class="table-responsive" id="div_table" >
+	            <table id="table" class="table table-hover table-bordered ">
+	              <thead>
+	                <tr >
+	                  <th style="text-align: center;">Product ID</th>
+	                  <!-- <th style="text-align: center;width: auto;">Description</th> -->
+	                  <th style="text-align: center;">Date</th>
+	                  <th style="text-align: center;">QTY</th>
+	              	{% if forecast.status == 'Private'%}
+	                  <th style="text-align: center;width: 3%;">Remove</th>
+	              	{% endif %}
+
+	                </tr>
+	              </thead>
+	              <tbody>
+	              	{% if forecast.status == 'Publish'%}
+		              	{% for i in forecast_detail %}
+												{% if i.date != i.old_date or i.qty != i.old_qty %}
+											<tr style="background-color: #00c2b71f">
+
+												{% else %}
+											<tr >
+												{% endif %}
+												<td>{{i.product_id}}</td>
+												{% if i.date == i.old_date %}
+												<td align="center">{{i.date}}</td>
+												{% else %}
+												<td align="center">{{i.old_date}} <i class="fa fa-long-arrow-right"></i> {{i.date}}</td>
+												{% endif %}
+
+												{% if i.qty == i.old_qty %}
+												<td align="right">{{i.qty}}</td>
+												{% else %}
+												<td align="right">{{i.old_qty}} <i class="fa fa-long-arrow-right"></i> {{i.qty}} 
+													{% if i.old_qty > i.qty %} <i class="fa fa-caret-down" style="color: red"></i>{% else %}<i class="fa fa-caret-up" style="color: #5acc54;font-size: 20px;"></i>{% endif %} </td>
+												{% endif %}
+											</tr>	              		
+		              	{% endfor %}
+		              {% else %}
+		              	{% for i in forecast_detail %}
+
+		              	<tr>
+											<td>{{i.product_id}}<input type="hidden" value="{{i.product_id}}" name="product_id[]"></td>
+											<td><input type="date" class="form-control" name="date[]" value="{{i.date}}">
+												<input type="hidden" class="form-control" name="old_date[]" value="{{i.old_date}}"></td>
+											<td><input type="number" name="qty[]"  class="form-control" value="{{i.qty}}">
+												<input type="hidden" name="old_qty[]"  class="form-control" value="{{i.old_qty}}"></td>
+											<td align="center"><button class="btn btn-danger"><i class="fa fa-close"></i></button></td>
+										</tr>	
+		              	{% endfor %}
+
+	              	{% endif %}
+	              </tbody>
+	            </table>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</form>
+{% endblock %}
+{% block extra_js %}
+	<script src="{% static 'js/data-table/jquery.dataTables.min.js' %}"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.1/js/dataTables.fixedColumns.min.js"></script>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+
+
+	var table = $('#table').DataTable({
+		aLengthMenu: [
+        [10, 50, 100, 200, -1],
+        [10, 50, 100, 200, "All"]
+    ],
+    'dom': 'Blfrtip',
+    'buttons': [
+        // 'copy', 'csv', 'excel', 'pdf', 'print'
+        'excel'
+    ]
+	})
+	$(".dt-button ").addClass('btn btn-primary')
+	$(".dt-button ").html('<i class="fa fa-download"></i> Excel')
+	$(".dt-button ").attr('title','Download Excel File')
+
+	$('#table').on( 'click',  'button', function () {
+		if(confirm("Are you sure to delete this record ?")){
+			table.row($(this).parents('tr')).remove().draw(false);
+		}
+	});
+
+	$("#saveform").click(function(){
+		if(confirm("Do you want to update this form ?")){
+			table.destroy()
+			table = $('#table').DataTable({
+					"paging": false
+			})
+			
+			$( "#form_create" ).submit();
+			window.onbeforeunload = null;
+		}
+	})
+</script>
+{% endblock %}

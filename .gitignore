@@ -1,0 +1,11 @@
+*.pyc
+.DS_Store
+_pycache_
+*.pdf
+settings_prod.py
+db.sqlite3
+myvenv
+media/
+*.csv
+__pycache__
+

@@ -1,0 +1,404 @@
+{% load staticfiles %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Customer Demand Management</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Fonts
+		============================================ -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Bootstrap CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <!-- owl.carousel CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.transitions.css' %}">
+    <!-- meanmenu CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/meanmenu/meanmenu.min.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/wave/button.css' %}"> -->
+    <!-- animate CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <!-- normalize CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <!-- mCustomScrollbar CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/scrollbar/jquery.mCustomScrollbar.min.css' %}">
+    <!-- jvectormap CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/jvectormap/jquery-jvectormap-2.0.3.css' %}">
+    <!-- notika icon CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/notika-custom-icon.css' %}">
+    <!-- wave CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/wave/waves.min.css' %}">
+    <!-- main CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <!-- style CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- responsive CSS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <!-- modernizr JS
+		============================================ -->
+    <link rel="stylesheet" href="{% static 'css/notification/notification.css' %}">
+
+    <script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
+    {% block extra_style %}
+    {% endblock %}
+    {% block style %}
+    {% endblock %}
+    <style type="text/css">
+    .footer-copyright-area {
+      margin-top: 40px;
+      /*position: fixed;*/
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background-color: #098ed0a3;
+    }
+    .nav.navbar-nav.notika-top-nav li a {
+      font-size: 15px;
+    }
+    .navbar-nav>li>a {
+      padding: 20px 5px 20px 5px;
+    }
+    .alert {
+      /*padding: 15px;*/
+       margin-bottom: 0px; 
+      /*border: 1px solid transparent;*/
+      /*border-radius: 4px;*/
+    }
+    .alert:not(.alert-dismissible) {
+      padding-right: 0px;
+    }
+    </style>
+</head>
+
+<body>
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <!-- Start Header Top Area -->
+    <div class="header-top-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div class="logo-area">
+              <a href="/"><img src="{% static 'img/logo.png' %}" alt="" style="width: 11%" /></a>
+            </div>
+          </div>
+          <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <div class="header-top-menu">
+              <ul class="nav navbar-nav notika-top-nav">
+                <li class="nav-item dropdown">
+                  {% if user == 'notlogin' %}
+                    <a href="/login/" class="btn" title="Sign In">
+                      <i class="fa fa-sign-in"></i> Sign In
+                    </a>
+                  {% else %}
+                    <a href="/logout/" class="btn" title="Sign out">
+                    	<i class="fa fa-sign-out"></i> Sign Out
+                    </a>
+                  {% endif %}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Header Top Area -->
+    <!-- Mobile Menu start -->
+    <!-- <div style="min-height: 10%%;"> -->
+      {% block menu %}
+      <div class="mobile-menu-area">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="mobile-menu">
+                <nav id="dropdown">
+                  <ul class="mobile-menu-nav">
+                    <li><a data-toggle="collapse" data-target="#Charts" href="#">Main Menu</a>
+                      <ul class="collapse dropdown-header-top">
+                        <li><a href="/">Dashboard </a></li>
+                        <li><a href="/report/">Analytic</a></li>
+                        <li><a href="/upload/">Upload File</a></li>
+                      </ul>
+                    </li>
+
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Mobile Menu end -->
+      <!-- Main Menu area start-->
+      <div class="main-menu-area mg-tb-40">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro">
+                  <li {% if request.resolver_match.url_name == "home" %}class="active"{% endif %} ><a data-toggle="tab" href="#Home"><i class="fa fa-user-secret"  style="color: #847b7b"></i> Customer Menu </a>
+                  </li>
+                  <li {% if request.resolver_match.url_name == "svi" %}class="active"{% endif %}><a data-toggle="tab" href="#approve"><i class="fa fa-university" style="color: #847b7b"></i> SVI Menu </a>
+                  </li>
+              </ul>
+              <div class="tab-content custom-menu-content">
+                <div id="Home" class="tab-pane in  notika-tab-menu-bg animated flipInX {% if request.resolver_match.url_name == "home" %}active{% endif %}">
+                  <ul class="notika-main-menu-dropdown">
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/report/">Analytic</a></li>
+                    <li><a href="/upload/">Upload File</a></li>
+                  </ul>
+                </div>
+                <div id="approve" class="tab-pane in notika-tab-menu-bg animated flipInX {% if request.resolver_match.url_name == "svi" %}active{% endif %}">
+                  <ul class="notika-main-menu-dropdown">
+                    <li ><a href="/svi-version/">SVI Version</a></li> 
+                    <li ><a href="/approve/">Approve</a></li> 
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endblock %}
+      <!-- Main Menu area End-->
+      <!-- Start Status area -->
+    	{% block content%}
+    	{% endblock %}
+    <!-- </div> -->
+    <!-- End Realtime sts area-->
+    <!-- Start Footer area-->
+    <div class="footer-copyright-area hidden-xs hidden-sm">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="footer-copy-right">
+              <p>Develop by Sujaray Sayan (MIS Tel.1507)</a>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Footer area-->
+    <!-- jquery
+		============================================ -->
+    <script src="{% static 'js/vendor/jquery-1.12.4.min.js' %}"></script>
+    <!-- bootstrap JS
+		============================================ -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- wow JS
+		============================================ -->
+    <script src="{% static 'js/wow.min.js' %}"></script>
+    <!-- price-slider JS
+		============================================ -->
+    <script src="{% static 'js/jquery-price-slider.js' %}"></script>
+    <!-- owl.carousel JS
+		============================================ -->
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <!-- scrollUp JS
+		============================================ -->
+    <script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
+    <!-- meanmenu JS
+		============================================ -->
+    <script src="{% static 'js/meanmenu/jquery.meanmenu.js' %}"></script>
+    <!-- counterup JS
+		============================================ -->
+    <script src="{% static 'js/counterup/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/counterup/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/counterup/counterup-active.js' %}"></script>
+    <!-- mCustomScrollbar JS
+		============================================ -->
+    <script src="{% static 'js/scrollbar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+    <!-- jvectormap JS
+		============================================ -->
+    <!-- <script src="{% static 'js/jvectormap/jquery-jvectormap-2.0.2.min.js' %}"></script> -->
+    <!-- <script src="{% static 'js/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script> -->
+    <!-- <script src="{% static 'js/jvectormap/jvectormap-active.js' %}"></script> -->
+    <!-- sparkline JS
+		============================================ -->
+    <script src="{% static 'js/sparkline/jquery.sparkline.min.js' %}"></script>
+    <script src="{% static 'js/sparkline/sparkline-active.js' %}"></script>
+    <!-- sparkline JS
+		============================================ -->
+    <script src="{% static 'js/flot/jquery.flot.js' %}"></script>
+    <script src="{% static 'js/flot/jquery.flot.resize.js' %}"></script>
+    <script src="{% static 'js/flot/curvedLines.js' %}"></script>
+    <script src="{% static 'js/flot/flot-active.js' %}"></script>
+    <!-- knob JS
+		============================================ -->
+    <script src="{% static 'js/knob/jquery.knob.js' %}"></script>
+    <script src="{% static 'js/knob/jquery.appear.js' %}"></script>
+    <script src="{% static 'js/knob/knob-active.js' %}"></script>
+    <!--  wave JS
+		============================================ -->
+    <script src="{% static 'js/wave/waves.min.js' %}"></script>
+    <script src="{% static 'js/wave/wave-active.js' %}"></script>
+    <!--  todo JS
+		============================================ -->
+    <script src="{% static 'js/todo/jquery.todo.js' %}"></script>
+    <!-- plugins JS
+		============================================ -->
+    <script src="{% static 'js/plugins.js' %}"></script>
+	  <!--  Chat JS
+		============================================ -->
+    <script src="{% static 'js/chat/moment.min.js' %}"></script>
+    <script src="{% static 'js/chat/jquery.chat.js' %}"></script>
+    <!-- main JS
+		============================================ -->
+    <script src="{% static 'js/main.js' %}"></script>
+    <!--  notification JS
+    ============================================ -->
+    <script src="{% static 'js/notification/bootstrap-growl.min.js' %}"></script>
+
+	  <!-- tawk chat JS
+
+		============================================ -->
+    <!-- <script src="{% static 'js/tawk-chat.js' %}"></script> -->
+    {% block extra_js %}
+    {% endblock %}
+    {% block js %}
+    {% endblock %}
+    <script src="{% static 'js/dialog/sweetalert2.min.js' %}"></script>
+    
+  <script type="text/javascript">
+    (function ($) {
+      "use strict";
+     
+      /*
+       * Notifications
+       */
+      
+// alert alert-info alert-dismissable growl-animated fadeInDown animated fadeOutUp
+      
+      // setTimeout(function() {
+      // // Do something after 5 seconds
+      //   $('.alert-info').addClass( "fadeOutUp" )
+      // }, 3000);
+      // setTimeout(function() {
+      //   $('#notify').html( "" )
+      // }, 3500);
+      
+      // $('.notification-demo .btn').on('click', function(e){
+      //   e.preventDefault();
+      //   var nFrom = $(this).attr('data-from');
+      //   var nAlign = $(this).attr('data-align');
+      //   var nIcons = $(this).attr('data-icon');
+      //   var nType = $(this).attr('data-type');
+      //   var nAnimIn = $(this).attr('data-animation-in');
+      //   var nAnimOut = $(this).attr('data-animation-out');
+        
+      // });
+    {% if upload_status == 'True' %}
+      function notify(from, align, icon, type, animIn, animOut, countItem){
+        $.growl({
+          icon: icon,
+          title: countItem+' file uploading.',
+          message: 'Please wait a few minute',
+          url: ''
+        },{
+            element: 'body',
+            type: type,
+            // allow_dismiss: true,
+            placement: {
+                from: from,
+                align: align
+            },
+            offset: {
+              x: 20,
+              y: 85
+            },
+            spacing: 10,
+            z_index: 1031,
+            // delay: 2500,
+            timer: 1000,
+            url_target: '_blank',
+            mouse_over: false,
+            animate: {
+                enter: animIn,
+                exit: animOut
+            },
+            icon_type: 'class',
+            template: '<span id="notify"><div data-growl="container" class="alert" role="alert">' +
+                    '<span class="close" data-growl="dismiss">' +
+                      '<i class="fa fa-spinner fa-spin fa-1x fa-fw"></i><span class="sr-only">Loading...</span>'+
+                    '</span>' +
+                    '<span data-growl="icon"></span>' +
+                    '<span data-growl="title" id="notiTitle"></span>' +
+                    '<span data-growl="message"></span>' +
+                  '</div></span>'
+        });
+      };
+
+      var interval = "",token = 0
+
+      function checkUploadfile(){
+        $.ajax({
+          type : "GET",
+          url: "/checkUpload/", 
+          success: function(result){
+            console.log(result)
+            if (result.is_done == "True"){
+              $('.alert-info').addClass( "fadeOutDown" )
+              setTimeout(function() {
+                  $('#notify').html( "" )
+              }, 900);
+              clearInterval(interval);
+            }else if(result.is_done == "False"){
+              if(token==0){
+                notify("bottom", "right", "", "info", "animated fadeInUp", "animated fadeOutDown",result.count);
+                token = 1
+              }else{
+                $("#notiTitle").html( result.count+' file uploading.')
+              }
+            }else{
+             alert("Error : " + result.is_done)
+             $('.alert-info').addClass( "fadeOutDown" )
+              setTimeout(function() {
+                  $('#notify').html( "" )
+              }, 900);
+              clearInterval(interval);
+              location.reload(true);
+            }
+          }
+        });
+      }
+      checkUploadfile()
+      interval = setInterval(checkUploadfile, 5000);
+
+     
+    {% endif %}
+    })(jQuery); 
+     // function test(){
+     //    console.log("test")
+     //  }
+     //  var interval1 = setInterval(test, 1000);
+     content_height = $( "html" ).innerHeight();
+     screen_height =  screen.height;
+     if (content_height+50 < screen_height) {
+      /*: fixed;*/
+      $(".footer-copyright-area").css('position','fixed')
+     }
+
+  </script>
+</body>
+
+</html>
