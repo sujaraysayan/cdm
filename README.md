@@ -1,5 +1,5 @@
 # Customer Demand Management
-How to install this project
+How to install this project (Windows)
 
 1. install git bash from : https://git-scm.com/downloads
 2. add SSH key in your account setting
