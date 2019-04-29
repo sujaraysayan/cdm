@@ -11,4 +11,4 @@ How to install this project
 6. How to update your code to github
    * **git add .**      
     * **git commit -a**   
-     * **$ git push**      
+     * **git push**      
