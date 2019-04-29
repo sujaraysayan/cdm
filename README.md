@@ -1,5 +1,5 @@
-# cdm
-customer demand management
+# Customer Demand Management
+How to install this project
 
 1. install git bash from : https://git-scm.com/downloads
 2. add SSH key in your account setting
