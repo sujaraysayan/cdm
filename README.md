@@ -2,7 +2,7 @@
 How to install this project (Windows)
 
 1. install git bash from : https://git-scm.com/downloads
-2. add SSH key in your account setting
+2. add SSH key in your account setting : https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 3. Fork this project to your repository
 4. clone your repository by command line: 
    * **$ git clone your_git_repository**
